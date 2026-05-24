@@ -5,12 +5,22 @@ const formatCurrency = (value) =>
     maximumFractionDigits: 0
   }).format(value);
 
+const FALLBACK_IMAGE =
+  "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=800&q=80";
+
 export default function ProductCard({ product, onAddToCart }) {
   const discountPercent = Math.round(((product.oldPrice - product.price) / product.oldPrice) * 100);
 
   return (
     <article className="product-card">
-      <img src={product.image} alt={product.name} loading="lazy" />
+      <img
+        src={product.image}
+        alt={product.name}
+        loading="lazy"
+        onError={(event) => {
+          event.currentTarget.src = FALLBACK_IMAGE;
+        }}
+      />
       <span className="discount">-{discountPercent}%</span>
 
       <div className="product-content">

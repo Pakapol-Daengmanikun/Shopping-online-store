@@ -3,7 +3,7 @@ export default function Header({ query, onQueryChange, cartCount, onOpenCart }) 
     <header className="header">
       <div className="brand-block">
         <p className="tag">free shipping over 299 THB</p>
-        <h1>ShopVibe</h1>
+        <h1>Guszilla Shop</h1>
       </div>
 
       <div className="search-row">

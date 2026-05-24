@@ -5,6 +5,9 @@ const formatCurrency = (value) =>
     maximumFractionDigits: 0
   }).format(value);
 
+const FALLBACK_IMAGE =
+  "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=800&q=80";
+
 const paymentOptions = ["Cash on Delivery", "PromptPay", "Credit Card"];
 
 export default function CartDrawer({
@@ -32,7 +35,13 @@ export default function CartDrawer({
         {cart.items.length === 0 && <p className="empty">No items yet.</p>}
         {cart.items.map((item) => (
           <div key={item.productId} className="cart-item">
-            <img src={item.product.image} alt={item.product.name} />
+            <img
+              src={item.product.image}
+              alt={item.product.name}
+              onError={(event) => {
+                event.currentTarget.src = FALLBACK_IMAGE;
+              }}
+            />
             <div>
               <h4>{item.product.name}</h4>
               <p>{formatCurrency(item.product.price)}</p>

@@ -241,5 +241,135 @@ export const products = [
     rating: 4.9,
     stock: 500,
     location: "Suphan Buri"
+  },
+  {
+    id: "p19",
+    categoryId: "c1",
+    name: "Power Bank 20000mAh",
+    image:
+      "https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?auto=format&fit=crop&w=800&q=80",
+    price: 699,
+    oldPrice: 999,
+    sold: 4700,
+    rating: 4.8,
+    stock: 180,
+    location: "Bangkok"
+  },
+  {
+    id: "p20",
+    categoryId: "c2",
+    name: "High Waist Denim Jeans",
+    image:
+      "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?auto=format&fit=crop&w=800&q=80",
+    price: 520,
+    oldPrice: 790,
+    sold: 2340,
+    rating: 4.6,
+    stock: 78,
+    location: "Chiang Mai"
+  },
+  {
+    id: "p21",
+    categoryId: "c3",
+    name: "Sunscreen SPF50+ PA++++",
+    image:
+      "https://images.unsplash.com/photo-1556228578-8c89e6adf883?auto=format&fit=crop&w=800&q=80",
+    price: 349,
+    oldPrice: 499,
+    sold: 3920,
+    rating: 4.9,
+    stock: 142,
+    location: "Phuket"
+  },
+  {
+    id: "p22",
+    categoryId: "c4",
+    name: "Mechanical Keyboard 87 Keys",
+    image:
+      "https://images.unsplash.com/photo-1618384887929-16ec33fab9ef?auto=format&fit=crop&w=800&q=80",
+    price: 1390,
+    oldPrice: 1890,
+    sold: 1680,
+    rating: 4.7,
+    stock: 69,
+    location: "Pathum Thani"
+  },
+  {
+    id: "p23",
+    categoryId: "c5",
+    name: "Aroma Diffuser 500ml",
+    image:
+      "https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?auto=format&fit=crop&w=800&q=80",
+    price: 429,
+    oldPrice: 649,
+    sold: 1250,
+    rating: 4.6,
+    stock: 88,
+    location: "Khon Kaen"
+  },
+  {
+    id: "p24",
+    categoryId: "c6",
+    name: "Mixed Nuts Snack Pack",
+    image:
+      "https://images.unsplash.com/photo-1505575972945-280f9c49f65b?auto=format&fit=crop&w=800&q=80",
+    price: 159,
+    oldPrice: 229,
+    sold: 5400,
+    rating: 4.8,
+    stock: 260,
+    location: "Nakhon Ratchasima"
+  },
+  {
+    id: "p25",
+    categoryId: "c1",
+    name: "Robot Vacuum Cleaner Lite",
+    image:
+      "https://images.unsplash.com/photo-1583947582886-f40ec95dd752?auto=format&fit=crop&w=800&q=80",
+    price: 3690,
+    oldPrice: 4990,
+    sold: 980,
+    rating: 4.5,
+    stock: 31,
+    location: "Bangkok"
+  },
+  {
+    id: "p26",
+    categoryId: "c2",
+    name: "Sport Running Shorts",
+    image:
+      "https://images.unsplash.com/photo-1518459031867-a89b944bffe4?auto=format&fit=crop&w=800&q=80",
+    price: 279,
+    oldPrice: 399,
+    sold: 2870,
+    rating: 4.7,
+    stock: 132,
+    location: "Udon Thani"
+  },
+  {
+    id: "p27",
+    categoryId: "c4",
+    name: "1080p WiFi Security Camera",
+    image:
+      "https://images.unsplash.com/photo-1558002038-1055907df827?auto=format&fit=crop&w=800&q=80",
+    price: 890,
+    oldPrice: 1290,
+    sold: 2590,
+    rating: 4.6,
+    stock: 84,
+    location: "Nonthaburi"
+  },
+  {
+    id: "p28",
+    categoryId: "c5",
+    name: "Microfiber Bath Towel Set",
+    image:
+      "https://images.unsplash.com/photo-1584467735871-bfb9f9a9e9a4?auto=format&fit=crop&w=800&q=80",
+    price: 319,
+    oldPrice: 469,
+    sold: 1740,
+    rating: 4.5,
+    stock: 110,
+    location: "Samut Prakan"
   }
 ];
