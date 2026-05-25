@@ -22,84 +22,124 @@ export default function CartDrawer({
   onCheckout,
   checkingOut
 }) {
-  return (
-    <aside className={`cart-drawer ${open ? "open" : ""}`}>
-      <div className="cart-head">
-        <h3>Your Cart</h3>
-        <button type="button" onClick={onClose}>
-          Close
-        </button>
-      </div>
+  const itemCount = cart.items.reduce((acc, item) => acc + item.quantity, 0);
 
-      <div className="cart-items">
-        {cart.items.length === 0 && <p className="empty">No items yet.</p>}
-        {cart.items.map((item) => (
-          <div key={item.productId} className="cart-item">
-            <img
-              src={item.product.image}
-              alt={item.product.name}
-              onError={(event) => {
-                event.currentTarget.src = FALLBACK_IMAGE;
-              }}
-            />
-            <div>
-              <h4>{item.product.name}</h4>
-              <p>{formatCurrency(item.product.price)}</p>
-              <div className="qty-row">
-                <button type="button" onClick={() => onDecrease(item)}>
-                  -
-                </button>
-                <span>{item.quantity}</span>
-                <button type="button" onClick={() => onIncrease(item)}>
-                  +
-                </button>
-                <button type="button" onClick={() => onRemove(item.productId)}>
-                  Remove
-                </button>
+  return (
+    <>
+      <button
+        type="button"
+        className={`cart-backdrop ${open ? "open" : ""}`}
+        onClick={onClose}
+        aria-label="Close cart"
+        tabIndex={open ? 0 : -1}
+      />
+      <aside className={`cart-drawer ${open ? "open" : ""}`} aria-hidden={!open}>
+        <div className="cart-head">
+          <div>
+            <p className="cart-eyebrow">{itemCount} {itemCount === 1 ? "item" : "items"} ready</p>
+            <h3>Your Cart</h3>
+          </div>
+          <button type="button" className="icon-btn" onClick={onClose} aria-label="Close cart">
+            x
+          </button>
+        </div>
+
+        <div className="cart-items">
+          {cart.items.length === 0 && (
+            <div className="empty">
+              <span>0</span>
+              <h4>Your cart is empty</h4>
+              <p>Add something you love and it will appear here.</p>
+            </div>
+          )}
+          {cart.items.map((item) => (
+            <div key={item.productId} className="cart-item">
+              <img
+                src={item.product.image}
+                alt={item.product.name}
+                onError={(event) => {
+                  event.currentTarget.src = FALLBACK_IMAGE;
+                }}
+              />
+              <div className="cart-item-info">
+                <div className="cart-item-title">
+                  <h4>{item.product.name}</h4>
+                  <button
+                    type="button"
+                    className="remove-btn"
+                    onClick={() => onRemove(item.productId)}
+                  >
+                    Remove
+                  </button>
+                </div>
+                <p>{formatCurrency(item.product.price)}</p>
+                <div className="qty-row">
+                  <button type="button" onClick={() => onDecrease(item)} aria-label="Decrease quantity">
+                    -
+                  </button>
+                  <span>{item.quantity}</span>
+                  <button type="button" onClick={() => onIncrease(item)} aria-label="Increase quantity">
+                    +
+                  </button>
+                </div>
               </div>
             </div>
+          ))}
+        </div>
+
+        <div className="checkout-block">
+          <div className="checkout-fields">
+            <label>
+              Shipping Address
+              <input
+                name="address"
+                type="text"
+                value={checkoutForm.address}
+                onChange={onCheckoutInputChange}
+                placeholder="Enter full delivery address"
+              />
+            </label>
+
+            <label>
+              Payment Method
+              <select
+                name="paymentMethod"
+                value={checkoutForm.paymentMethod}
+                onChange={onCheckoutInputChange}
+              >
+                {paymentOptions.map((method) => (
+                  <option key={method} value={method}>
+                    {method}
+                  </option>
+                ))}
+              </select>
+            </label>
           </div>
-        ))}
-      </div>
 
-      <div className="checkout-block">
-        <label>
-          Shipping Address
-          <input
-            name="address"
-            type="text"
-            value={checkoutForm.address}
-            onChange={onCheckoutInputChange}
-            placeholder="Enter full delivery address"
-          />
-        </label>
-
-        <label>
-          Payment Method
-          <select
-            name="paymentMethod"
-            value={checkoutForm.paymentMethod}
-            onChange={onCheckoutInputChange}
+          <div className="cart-summary">
+            <p>
+              <span>Subtotal</span>
+              <strong>{formatCurrency(cart.subtotal || 0)}</strong>
+            </p>
+            <p>
+              <span>Shipping</span>
+              <strong>{formatCurrency(cart.shippingFee || 0)}</strong>
+            </p>
+            <p className="total">
+              <span>Total</span>
+              <strong>{formatCurrency(cart.total || 0)}</strong>
+            </p>
+          </div>
+          <button
+            type="button"
+            className="checkout-btn"
+            onClick={onCheckout}
+            disabled={checkingOut || cart.items.length === 0}
           >
-            {paymentOptions.map((method) => (
-              <option key={method} value={method}>
-                {method}
-              </option>
-            ))}
-          </select>
-        </label>
-
-        <p>Subtotal: {formatCurrency(cart.subtotal || 0)}</p>
-        <p>Shipping: {formatCurrency(cart.shippingFee || 0)}</p>
-        <p className="total">Total: {formatCurrency(cart.total || 0)}</p>
-        <button
-          type="button"
-          onClick={onCheckout}
-          disabled={checkingOut || cart.items.length === 0}
-        >
-          {checkingOut ? "Processing..." : "Checkout"}
-        </button>
-      </div>
-    </aside>
+            {checkingOut ? "Processing..." : "Checkout"}
+          </button>
+        </div>
+      </aside>
+    </>
   );
 }
