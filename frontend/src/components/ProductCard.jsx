@@ -8,23 +8,31 @@ const formatCurrency = (value) =>
 const FALLBACK_IMAGE =
   "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=800&q=80";
 
-export default function ProductCard({ product, onAddToCart }) {
+export default function ProductCard({ product, onAddToCart, onViewDetails }) {
   const discountPercent = Math.round(((product.oldPrice - product.price) / product.oldPrice) * 100);
 
   return (
     <article className="product-card">
-      <img
-        src={product.image}
-        alt={product.name}
-        loading="lazy"
-        onError={(event) => {
-          event.currentTarget.src = FALLBACK_IMAGE;
-        }}
-      />
-      <span className="discount">-{discountPercent}%</span>
+      <button
+        type="button"
+        className="product-preview"
+        onClick={() => onViewDetails(product)}
+      >
+        <img
+          src={product.image}
+          alt={product.name}
+          loading="lazy"
+          onError={(event) => {
+            event.currentTarget.src = FALLBACK_IMAGE;
+          }}
+        />
+        <span className="discount">-{discountPercent}%</span>
+      </button>
 
       <div className="product-content">
-        <h3>{product.name}</h3>
+        <button type="button" className="detail-link" onClick={() => onViewDetails(product)}>
+          <h3>{product.name}</h3>
+        </button>
 
         <div className="prices">
           <span className="price">{formatCurrency(product.price)}</span>
@@ -41,7 +49,7 @@ export default function ProductCard({ product, onAddToCart }) {
           <p>{product.stock} left</p>
         </div>
 
-        <button type="button" onClick={() => onAddToCart(product.id)}>
+        <button type="button" className="add-to-cart-btn" onClick={() => onAddToCart(product.id)}>
           Add to cart
         </button>
       </div>

@@ -4,6 +4,7 @@ import Header from "./components/Header";
 import HeroBanner from "./components/HeroBanner";
 import CategoryTabs from "./components/CategoryTabs";
 import ProductCard from "./components/ProductCard";
+import ProductDetail from "./components/ProductDetail";
 import CartDrawer from "./components/CartDrawer";
 import OrderHistory from "./components/OrderHistory";
 
@@ -25,6 +26,7 @@ export default function App() {
   const [checkingOut, setCheckingOut] = useState(false);
   const [error, setError] = useState("");
   const [checkoutForm, setCheckoutForm] = useState(defaultCheckoutForm);
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
   const queryString = useMemo(() => {
     const params = new URLSearchParams();
@@ -85,6 +87,14 @@ export default function App() {
     } catch (err) {
       setError(err.message);
     }
+  };
+
+  const onProductSelect = (product) => {
+    setSelectedProduct(product);
+  };
+
+  const closeProductDetail = () => {
+    setSelectedProduct(null);
   };
 
   const onCheckoutInputChange = (event) => {
@@ -155,12 +165,27 @@ export default function App() {
           <p className="loading">Loading products...</p>
         ) : (
           <>
-            <section className="product-grid">
-              {products.map((product) => (
-                <ProductCard key={product.id} product={product} onAddToCart={addToCart} />
-              ))}
-            </section>
-            <OrderHistory orders={orders} />
+            {selectedProduct ? (
+              <ProductDetail
+                product={selectedProduct}
+                onAddToCart={addToCart}
+                onBack={closeProductDetail}
+              />
+            ) : (
+              <>
+                <section className="product-grid">
+                  {products.map((product) => (
+                    <ProductCard
+                      key={product.id}
+                      product={product}
+                      onAddToCart={addToCart}
+                      onViewDetails={onProductSelect}
+                    />
+                  ))}
+                </section>
+                <OrderHistory orders={orders} />
+              </>
+            )}
           </>
         )}
       </main>
