@@ -139,6 +139,24 @@ export default function App() {
     }
   };
 
+  const handleSignup = async ({ username, password, name }) => {
+    setAuthError("");
+    setAuthLoading(true);
+
+    try {
+      const response = await api.signup(username, password, name);
+      const { user: registeredUser, token } = response.data;
+      setAuthToken(token);
+      localStorage.setItem("guszilla-user", JSON.stringify(registeredUser));
+      localStorage.setItem("guszilla-token", token);
+      setUser(registeredUser);
+    } catch (err) {
+      setAuthError(err.message);
+    } finally {
+      setAuthLoading(false);
+    }
+  };
+
   const handleLogout = async () => {
     try {
       await api.logout();
@@ -202,7 +220,12 @@ export default function App() {
         />
 
         <main>
-          <LoginPage onLogin={handleLogin} loading={authLoading} error={authError} />
+          <LoginPage
+            onLogin={handleLogin}
+            onSignup={handleSignup}
+            loading={authLoading}
+            error={authError}
+          />
         </main>
       </div>
     );

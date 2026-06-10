@@ -29,6 +29,11 @@ export const api = {
       method: "POST",
       body: JSON.stringify({ username, password })
     }),
+  signup: (username, password, name) =>
+    request("/auth/signup", {
+      method: "POST",
+      body: JSON.stringify({ username, password, name })
+    }),
   logout: () =>
     request("/auth/logout", {
       method: "POST"

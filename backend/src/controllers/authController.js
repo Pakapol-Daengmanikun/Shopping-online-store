@@ -33,6 +33,42 @@ export const login = (req, res) => {
   });
 };
 
+export const signup = (req, res) => {
+  const { username, password, name } = req.body;
+
+  if (!username || !password || !name) {
+    return res.status(400).json({ message: "Username, password and name are required" });
+  }
+
+  const normalized = username.trim().toLowerCase();
+  if (users.some((item) => item.username.toLowerCase() === normalized)) {
+    return res.status(409).json({ message: "Username already exists" });
+  }
+
+  const user = {
+    id: nanoid(10),
+    username: normalized,
+    password,
+    name: name.trim()
+  };
+
+  users.push(user);
+
+  const token = nanoid(20);
+  sessions.set(token, user.id);
+
+  return res.status(201).json({
+    data: {
+      user: {
+        id: user.id,
+        username: user.username,
+        name: user.name
+      },
+      token
+    }
+  });
+};
+
 export const logout = (req, res) => {
   const token = getTokenFromHeader(req);
   if (token) {
