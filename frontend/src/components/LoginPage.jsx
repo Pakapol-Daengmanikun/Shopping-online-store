@@ -5,6 +5,7 @@ export default function LoginPage({ onLogin, onSignup, loading, error }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const isSignup = mode === "signup";
 
@@ -48,15 +49,24 @@ export default function LoginPage({ onLogin, onSignup, loading, error }) {
             />
           </label>
 
-          <label>
+          <label className="password-field">
             Password
-            <input
-              type="password"
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-              placeholder="Enter password"
-              autoComplete={isSignup ? "new-password" : "current-password"}
-            />
+            <div className="password-row">
+              <input
+                type={showPassword ? "text" : "password"}
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
+                placeholder="Enter password"
+                autoComplete={isSignup ? "new-password" : "current-password"}
+              />
+              <button
+                type="button"
+                className="toggle-password-btn"
+                onClick={() => setShowPassword((prev) => !prev)}
+              >
+                {showPassword ? "Hide" : "Show"}
+              </button>
+            </div>
           </label>
 
           {error && <p className="login-error">{error}</p>}
