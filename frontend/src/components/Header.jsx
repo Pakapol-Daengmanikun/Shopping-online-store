@@ -1,4 +1,4 @@
-export default function Header({ query, onQueryChange, cartCount, onOpenCart }) {
+export default function Header({ query, onQueryChange, cartCount, onOpenCart, user, onLogout }) {
   return (
     <header className="header">
       <div className="brand-block">
@@ -18,9 +18,20 @@ export default function Header({ query, onQueryChange, cartCount, onOpenCart }) 
         </button>
       </div>
 
-      <button type="button" className="cart-btn" onClick={onOpenCart}>
-        Cart ({cartCount})
-      </button>
+      <div className="header-actions">
+        {user ? (
+          <>
+            <span className="user-label">Hello, {user.name}</span>
+            <button type="button" className="logout-btn" onClick={onLogout}>
+              Logout
+            </button>
+          </>
+        ) : null}
+
+        <button type="button" className="cart-btn" onClick={onOpenCart}>
+          Cart ({cartCount})
+        </button>
+      </div>
     </header>
   );
 }

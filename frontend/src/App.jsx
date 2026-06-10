@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { api } from "./api";
+import { api, setAuthToken } from "./api";
 import Header from "./components/Header";
 import HeroBanner from "./components/HeroBanner";
 import CategoryTabs from "./components/CategoryTabs";
@@ -7,6 +7,7 @@ import ProductCard from "./components/ProductCard";
 import ProductDetail from "./components/ProductDetail";
 import CartDrawer from "./components/CartDrawer";
 import OrderHistory from "./components/OrderHistory";
+import LoginPage from "./components/LoginPage";
 
 const defaultCheckoutForm = {
   address: "",
@@ -27,6 +28,19 @@ export default function App() {
   const [error, setError] = useState("");
   const [checkoutForm, setCheckoutForm] = useState(defaultCheckoutForm);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [user, setUser] = useState(() => {
+    const saved = localStorage.getItem("guszilla-user");
+    return saved ? JSON.parse(saved) : null;
+  });
+  const [authLoading, setAuthLoading] = useState(false);
+  const [authError, setAuthError] = useState("");
+
+  useEffect(() => {
+    const token = localStorage.getItem("guszilla-token");
+    if (token) {
+      setAuthToken(token);
+    }
+  }, []);
 
   const queryString = useMemo(() => {
     const params = new URLSearchParams();
@@ -38,6 +52,11 @@ export default function App() {
   }, [query, activeCategory, sortBy]);
 
   const loadData = async () => {
+    if (!user) {
+      setLoading(false);
+      return;
+    }
+
     try {
       setError("");
       const [categoryRes, productRes, cartRes, ordersRes] = await Promise.all([
@@ -58,8 +77,13 @@ export default function App() {
   };
 
   useEffect(() => {
+    if (!user) {
+      setLoading(false);
+      return;
+    }
+
     loadData();
-  }, [queryString]);
+  }, [queryString, user]);
 
   const addToCart = async (productId) => {
     try {
@@ -95,6 +119,37 @@ export default function App() {
 
   const closeProductDetail = () => {
     setSelectedProduct(null);
+  };
+
+  const handleLogin = async ({ username, password }) => {
+    setAuthError("");
+    setAuthLoading(true);
+
+    try {
+      const response = await api.login(username, password);
+      const { user: loggedUser, token } = response.data;
+      setAuthToken(token);
+      localStorage.setItem("guszilla-user", JSON.stringify(loggedUser));
+      localStorage.setItem("guszilla-token", token);
+      setUser(loggedUser);
+    } catch (err) {
+      setAuthError(err.message);
+    } finally {
+      setAuthLoading(false);
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      await api.logout();
+    } catch (_err) {
+      // ignore logout errors
+    }
+    setUser(null);
+    setSelectedProduct(null);
+    localStorage.removeItem("guszilla-user");
+    localStorage.removeItem("guszilla-token");
+    setAuthToken("");
   };
 
   const onCheckoutInputChange = (event) => {
@@ -134,6 +189,25 @@ export default function App() {
     }
   };
 
+  if (!user) {
+    return (
+      <div className="page">
+        <Header
+          query={query}
+          onQueryChange={setQuery}
+          cartCount={cart.items.reduce((acc, item) => acc + item.quantity, 0)}
+          onOpenCart={() => setCartOpen(true)}
+          user={null}
+          onLogout={handleLogout}
+        />
+
+        <main>
+          <LoginPage onLogin={handleLogin} loading={authLoading} error={authError} />
+        </main>
+      </div>
+    );
+  }
+
   return (
     <div className="page">
       <Header
@@ -141,6 +215,8 @@ export default function App() {
         onQueryChange={setQuery}
         cartCount={cart.items.reduce((acc, item) => acc + item.quantity, 0)}
         onOpenCart={() => setCartOpen(true)}
+        user={user}
+        onLogout={handleLogout}
       />
 
       <main>

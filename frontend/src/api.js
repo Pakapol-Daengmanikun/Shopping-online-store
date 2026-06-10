@@ -1,9 +1,15 @@
 const API_BASE_URL = "http://localhost:4000/api";
+let authToken = "";
+
+export const setAuthToken = (token) => {
+  authToken = token;
+};
 
 const request = async (path, options = {}) => {
   const response = await fetch(`${API_BASE_URL}${path}`, {
     headers: {
       "Content-Type": "application/json",
+      Authorization: authToken ? `Bearer ${authToken}` : undefined,
       ...(options.headers || {})
     },
     ...options
@@ -18,6 +24,15 @@ const request = async (path, options = {}) => {
 };
 
 export const api = {
+  login: (username, password) =>
+    request("/auth/login", {
+      method: "POST",
+      body: JSON.stringify({ username, password })
+    }),
+  logout: () =>
+    request("/auth/logout", {
+      method: "POST"
+    }),
   getCategories: () => request("/categories"),
   getProducts: (query) => request(`/products${query}`),
   getCart: () => request("/cart"),

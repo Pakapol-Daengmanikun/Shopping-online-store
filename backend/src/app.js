@@ -5,6 +5,7 @@ import morgan from "morgan";
 
 import cartRoutes from "./routes/cartRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
+import authRoutes from "./routes/authRoutes.js";
 import { errorHandler, notFound } from "./middleware/errorHandlers.js";
 
 const app = express();
@@ -18,6 +19,7 @@ app.get("/api/health", (_req, res) => {
   res.json({ status: "ok", service: "online-store-backend" });
 });
 
+app.use("/api", authRoutes);
 app.use("/api", productRoutes);
 app.use("/api", cartRoutes);
 
