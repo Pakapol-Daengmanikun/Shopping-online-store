@@ -26,7 +26,7 @@ export const products = [
     categoryId: "c2",
     name: "Oversized Street Hoodie",
     image:
-      "https://images.unsplash.com/photo-1618354691249-7d5f3f46fbb9?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1528660481972-222d8a31db6f?auto=format&fit=crop&w=800&q=80",
     price: 490,
     oldPrice: 790,
     sold: 1900,
@@ -143,7 +143,7 @@ export const products = [
     categoryId: "c3",
     name: "Hydrating Gel Moisturizer",
     image:
-      "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=800&q=80",
     price: 289,
     oldPrice: 429,
     sold: 2750,
@@ -156,7 +156,7 @@ export const products = [
     categoryId: "c3",
     name: "Matte Lip Tint Trio",
     image:
-      "https://images.unsplash.com/photo-1586495777744-4413f21062fa?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=800&q=80",
     price: 259,
     oldPrice: 399,
     sold: 3600,
@@ -312,7 +312,7 @@ export const products = [
     categoryId: "c6",
     name: "Mixed Nuts Snack Pack",
     image:
-      "https://images.unsplash.com/photo-1505575972945-280f9c49f65b?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1511690743698-d9d85f2fbf38?auto=format&fit=crop&w=800&q=80",
     price: 159,
     oldPrice: 229,
     sold: 5400,

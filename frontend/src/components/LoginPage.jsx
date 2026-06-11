@@ -22,7 +22,7 @@ export default function LoginPage({ onLogin, onSignup, loading, error }) {
     <div className="login-page">
       <div className="login-card">
         <h2>{isSignup ? "Create a new account" : "Sign in to Guszilla Shop"}</h2>
-        <p>{isSignup ? "Register a new user to start shopping." : "Use admin / 1234 to log in."}</p>
+        <p>{isSignup ? "Register a new user to start shopping." : "Welcome back! Enter your credentials to continue."}</p>
 
         <form onSubmit={handleSubmit}>
           {isSignup && (
