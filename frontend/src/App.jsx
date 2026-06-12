@@ -14,6 +14,16 @@ const defaultCheckoutForm = {
   paymentMethod: "Cash on Delivery"
 };
 
+const getStoredUser = () => {
+  try {
+    const saved = localStorage.getItem("guszilla-user");
+    return saved ? JSON.parse(saved) : null;
+  } catch (_err) {
+    localStorage.removeItem("guszilla-user");
+    return null;
+  }
+};
+
 export default function App() {
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
@@ -28,18 +38,39 @@ export default function App() {
   const [error, setError] = useState("");
   const [checkoutForm, setCheckoutForm] = useState(defaultCheckoutForm);
   const [selectedProduct, setSelectedProduct] = useState(null);
-  const [user, setUser] = useState(() => {
-    const saved = localStorage.getItem("guszilla-user");
-    return saved ? JSON.parse(saved) : null;
-  });
+  const [user, setUser] = useState(getStoredUser);
+  const [sessionChecked, setSessionChecked] = useState(false);
   const [authLoading, setAuthLoading] = useState(false);
   const [authError, setAuthError] = useState("");
 
   useEffect(() => {
     const token = localStorage.getItem("guszilla-token");
-    if (token) {
-      setAuthToken(token);
+
+    if (!token) {
+      setUser(null);
+      setSessionChecked(true);
+      return;
     }
+
+    setAuthToken(token);
+
+    const restoreSession = async () => {
+      try {
+        const response = await api.getMe();
+        const restoredUser = response.data.user;
+        localStorage.setItem("guszilla-user", JSON.stringify(restoredUser));
+        setUser(restoredUser);
+      } catch (_err) {
+        setAuthToken("");
+        localStorage.removeItem("guszilla-user");
+        localStorage.removeItem("guszilla-token");
+        setUser(null);
+      } finally {
+        setSessionChecked(true);
+      }
+    };
+
+    restoreSession();
   }, []);
 
   const queryString = useMemo(() => {
@@ -52,7 +83,7 @@ export default function App() {
   }, [query, activeCategory, sortBy]);
 
   const loadData = async () => {
-    if (!user) {
+    if (!sessionChecked || !user) {
       setLoading(false);
       return;
     }
@@ -77,13 +108,13 @@ export default function App() {
   };
 
   useEffect(() => {
-    if (!user) {
+    if (!sessionChecked || !user) {
       setLoading(false);
       return;
     }
 
     loadData();
-  }, [queryString, user]);
+  }, [queryString, user, sessionChecked]);
 
   const addToCart = async (productId) => {
     try {
@@ -132,6 +163,8 @@ export default function App() {
       localStorage.setItem("guszilla-user", JSON.stringify(loggedUser));
       localStorage.setItem("guszilla-token", token);
       setUser(loggedUser);
+      setSessionChecked(true);
+      setLoading(true);
     } catch (err) {
       setAuthError(err.message);
     } finally {
@@ -150,6 +183,8 @@ export default function App() {
       localStorage.setItem("guszilla-user", JSON.stringify(registeredUser));
       localStorage.setItem("guszilla-token", token);
       setUser(registeredUser);
+      setSessionChecked(true);
+      setLoading(true);
     } catch (err) {
       setAuthError(err.message);
     } finally {
@@ -165,6 +200,15 @@ export default function App() {
     }
     setUser(null);
     setSelectedProduct(null);
+    setCart({ items: [] });
+    setOrders([]);
+    setCategories([]);
+    setProducts([]);
+    setCheckoutForm(defaultCheckoutForm);
+    setError("");
+    setAuthError("");
+    setLoading(false);
+    setSessionChecked(true);
     localStorage.removeItem("guszilla-user");
     localStorage.removeItem("guszilla-token");
     setAuthToken("");
@@ -206,6 +250,25 @@ export default function App() {
       setCheckingOut(false);
     }
   };
+
+  if (!sessionChecked) {
+    return (
+      <div className="page">
+        <Header
+          query={query}
+          onQueryChange={setQuery}
+          cartCount={0}
+          onOpenCart={() => setCartOpen(true)}
+          user={null}
+          onLogout={handleLogout}
+        />
+
+        <main>
+          <p className="loading">Checking your session...</p>
+        </main>
+      </div>
+    );
+  }
 
   if (!user) {
     return (

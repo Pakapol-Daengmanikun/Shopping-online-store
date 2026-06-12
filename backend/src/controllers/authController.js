@@ -13,7 +13,8 @@ export const login = (req, res) => {
     return res.status(400).json({ message: "Username and password are required" });
   }
 
-  const user = users.find((item) => item.username === username);
+  const normalized = username.trim().toLowerCase();
+  const user = users.find((item) => item.username.toLowerCase() === normalized);
   if (!user || user.password !== password) {
     return res.status(401).json({ message: "Invalid username or password" });
   }

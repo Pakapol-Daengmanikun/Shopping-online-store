@@ -38,6 +38,7 @@ export const api = {
     request("/auth/logout", {
       method: "POST"
     }),
+  getMe: () => request("/auth/me"),
   getCategories: () => request("/categories"),
   getProducts: (query) => request(`/products${query}`),
   getCart: () => request("/cart"),
