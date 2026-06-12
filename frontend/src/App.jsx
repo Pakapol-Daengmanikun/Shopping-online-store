@@ -243,20 +243,24 @@ export default function App() {
       />
 
       <main>
-        <HeroBanner />
+        {!selectedProduct && (
+          <>
+            <HeroBanner />
 
-        <section className="toolbar">
-          <CategoryTabs
-            categories={categories}
-            activeCategory={activeCategory}
-            onSelectCategory={setActiveCategory}
-          />
-          <select value={sortBy} onChange={(event) => setSortBy(event.target.value)}>
-            <option value="top_sold">Sort: Top sold</option>
-            <option value="price_asc">Sort: Price low to high</option>
-            <option value="price_desc">Sort: Price high to low</option>
-          </select>
-        </section>
+            <section className="toolbar">
+              <CategoryTabs
+                categories={categories}
+                activeCategory={activeCategory}
+                onSelectCategory={setActiveCategory}
+              />
+              <select value={sortBy} onChange={(event) => setSortBy(event.target.value)}>
+                <option value="top_sold">Sort: Top sold</option>
+                <option value="price_asc">Sort: Price low to high</option>
+                <option value="price_desc">Sort: Price high to low</option>
+              </select>
+            </section>
+          </>
+        )}
 
         {error && <p className="error-box">{error}</p>}
 

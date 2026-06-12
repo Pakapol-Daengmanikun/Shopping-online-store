@@ -307,7 +307,7 @@ main {
   border: 1px solid var(--line);
   border-radius: 22px;
   background: var(--card);
-  padding: 1.5rem;
+  padding: clamp(1rem, 2vw, 1.5rem);
 }
 
 .back-btn {
@@ -323,8 +323,9 @@ main {
 
 .detail-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1.1fr) 1fr;
-  gap: 1.5rem;
+  grid-template-columns: minmax(360px, 0.95fr) minmax(380px, 1.05fr);
+  align-items: stretch;
+  gap: clamp(1rem, 2vw, 1.5rem);
 }
 
 .detail-image {
@@ -335,8 +336,8 @@ main {
 
 .detail-image img {
   width: 100%;
+  height: clamp(420px, calc(100vh - 250px), 620px);
   display: block;
-  aspect-ratio: 4 / 5;
   object-fit: cover;
 }
 
@@ -348,7 +349,7 @@ main {
 
 .detail-content h1 {
   margin: 0 0 0.85rem;
-  font-size: clamp(2.1rem, 3vw, 2.8rem);
+  font-size: clamp(2rem, 3vw, 2.8rem);
   line-height: 1.05;
   color: var(--brand-strong);
   letter-spacing: -0.02em;
@@ -388,7 +389,7 @@ main {
 .detail-meta {
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 18px;
-  padding: 0.95rem;
+  padding: clamp(0.75rem, 1.4vw, 0.95rem);
   background: rgba(255, 255, 255, 0.02);
 }
 
@@ -401,7 +402,7 @@ main {
 .detail-description {
   margin: 1rem 0 1.4rem;
   color: var(--muted);
-  line-height: 1.75;
+  line-height: 1.65;
 }
 
 .detail-add-btn {
@@ -461,9 +462,37 @@ main {
   font-size: 0.86rem;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1180px) {
+  .detail-grid {
+    grid-template-columns: minmax(320px, 0.9fr) minmax(360px, 1.1fr);
+  }
+
+  .detail-content h1 {
+    font-size: clamp(1.8rem, 3.4vw, 2.35rem);
+  }
+
+  .detail-meta-row {
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .detail-description {
+    margin-bottom: 1rem;
+  }
+
+  .detail-add-btn {
+    width: min(100%, 330px);
+  }
+}
+
+@media (max-width: 980px) {
   .detail-grid {
     grid-template-columns: 1fr;
+  }
+
+  .detail-image img {
+    height: auto;
+    aspect-ratio: 4 / 3;
   }
 
   .detail-add-btn {
