@@ -36,7 +36,8 @@ body {
   top: 0;
   z-index: 20;
   display: grid;
-  grid-template-columns: 220px 1fr 220px;
+  grid-template-columns: minmax(180px, 220px) minmax(220px, 1fr) minmax(0, auto);
+  align-items: center;
   gap: 1rem;
   padding: 1rem 1.5rem;
   background: rgba(15, 17, 23, 0.86);
@@ -50,14 +51,22 @@ body {
   align-items: center;
   justify-content: flex-end;
   gap: 0.75rem;
+  min-width: 0;
 }
 
 .user-label {
+  min-width: 0;
+  max-width: clamp(120px, 22vw, 260px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   color: var(--ink);
   font-weight: 600;
 }
 
 .logout-btn {
+  flex: 0 0 auto;
+  white-space: nowrap;
   background: rgba(255, 255, 255, 0.08);
   color: var(--ink);
   padding: 0.72rem 1rem;
@@ -86,6 +95,7 @@ body {
 .search-row {
   display: flex;
   gap: 0.5rem;
+  min-width: 0;
 }
 
 .search-row input {
@@ -126,6 +136,8 @@ body {
 .cart-btn,
 .product-content .add-to-cart-btn,
 .checkout-block button {
+  flex: 0 0 auto;
+  white-space: nowrap;
   background: var(--brand);
   color: #120b08;
   font-weight: 700;
@@ -803,6 +815,14 @@ main {
     grid-template-columns: 1fr;
   }
 
+  .header-actions {
+    justify-content: flex-start;
+  }
+
+  .user-label {
+    max-width: min(48vw, 320px);
+  }
+
   .hero-banner {
     grid-template-columns: 1fr;
   }
@@ -819,6 +839,16 @@ main {
 }
 
 @media (max-width: 520px) {
+  .header-actions {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    width: 100%;
+  }
+
+  .user-label {
+    max-width: 100%;
+  }
+
   .cart-drawer {
     top: 0;
     right: 0;
