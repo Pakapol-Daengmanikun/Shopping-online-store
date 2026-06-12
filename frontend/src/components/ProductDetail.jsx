@@ -56,8 +56,10 @@ const ProductDetail = ({ product, onAddToCart, onBack }) => {
             strong ratings, and fast shipping from {product.location}.
           </p>
 
-          <button type="button" className="product-content button-primary" onClick={() => onAddToCart(product.id)}>
-            Add to cart
+          <button type="button" className="detail-add-btn" onClick={() => onAddToCart(product.id)}>
+            <span className="detail-add-icon">+</span>
+            <span>Add to cart</span>
+            <strong>{formatCurrency(product.price)}</strong>
           </button>
         </div>
       </div>
